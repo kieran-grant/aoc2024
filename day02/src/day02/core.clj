@@ -34,9 +34,13 @@
   (and (> (count list) 1)
        (or (safely-increasing? list) (safely-decreasing? list))))
 
-(def safe-reports (filter safe? contents))
+(def solution1 (count (filter safe? contents)))
 
-(def solution1 (count safe-reports))
+;; TODO: Part 2
+;; passes_explicitly = filter safe? [pair of (x, y)] 
+;; if (passes_explcitly == false) return filter safe? [pair of (x, z)] return len (filter safe? [paris of (x, z)]) <= 1; 
+;;
+;; return (or (passes_explicitly list) (kind-of-safe? list))
 
 (defn -main
   "I don't do a whole lot ... yet."
