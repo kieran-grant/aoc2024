@@ -33,16 +33,16 @@
   [list]
   (let [zipped (zip-with - list (rest list))]
     (and (> (count zipped) 0)
-         (or (every? safely-increasing?  zipped)
-             (every? safely-decreasing?  zipped)))))
+         (or (every? safely-increasing? zipped)
+             (every? safely-decreasing? zipped)))))
+
+(defn remove-each [lst]
+  (map #(concat (take % lst) (drop (inc %) lst))
+       (range (count lst))))
 
 (defn kind-of-safe?
   [list]
-  (let [zipped (zip-with - list (drop 2 list))]
-    (and (> (count zipped) 0)
-         (if (every? pos? zipped)
-           (<= (count (filter safely-increasing? zipped)) 1)
-           (<= (count (filter safely-decreasing? zipped)) 1)))))
+  (some safe? (remove-each list)))
 
 (def solution1 (count (filter safe? contents)))
 
