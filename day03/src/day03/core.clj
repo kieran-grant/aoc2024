@@ -1,28 +1,32 @@
 (ns day03.core
   (:gen-class)
-  (:require
-   [clojure.string]))
-
-(def regex #"mul\(([\d]+),([\d]+)\)")
+  (:require [clojure.string :as str]))
 
 (def input (slurp "input.txt"))
 
-(def matches (map rest (re-seq regex input)))
+(defn get-mult-ops [input]
+  (->> input
+       (re-seq #"mul\(([\d]+),([\d]+)\)")
+       (map rest)))
 
-(defn multiply-pairs [[x y]] (* (read-string x) (read-string y)))
+(defn calculate-sum [matches]
+  (->> matches
+       (map (fn [[x y]] (* (read-string x) (read-string y))))
+       (reduce +)))
 
-(def solution1 (reduce + (map multiply-pairs matches)))
+(defn get-total-from-dump [dump]
+  (-> dump
+      (get-mult-ops)
+      (calculate-sum)))
 
-(def regex-dont-blocks #"(?x)don't\(\)[\s\S]*?(?=do\(\)|$)")
+(def solution1
+  (get-total-from-dump input))
 
-(def input-without-dont (clojure.string/replace input regex-dont-blocks ""))
+(def solution2
+  (-> input
+      (str/replace #"don't\(\)[\s\S]*?(?=do\(\)|$)" "") ; remove don't() blocks
+      (get-total-from-dump)))
 
-(def matches-without-dont (map rest (re-seq regex input-without-dont)))
-
-(def solution2 (reduce + (map multiply-pairs matches-without-dont)))
-
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& _args]
-  (println "Part 1 solution: " solution1)
-  (println "Part 2 solution: " solution2))
+(defn -main [& _args]
+  (println "Part 1 solution:" solution1)
+  (println "Part 2 solution:" solution2))
