@@ -41,3 +41,18 @@ MXMXAXMASX")
            1))) ; mark valid configuration as '1'
 
 (def solution1 (part-1 example-grid))
+
+(defn part-2
+  [grid]
+  (let [diags #{(vec "MAS") (vec "SAM")}
+        deltas [-1 0 1]]
+    (count
+     (for [[x y] (keys grid)
+           :when (and
+                  ;; calling hashset like a function returns the element if it exists
+                  ;; or nil otherwise
+                  (diags (for [d deltas] (grid [(+ x d) (+ y d)])))
+                  (diags (for [d deltas] (grid [(- x d) (+ y d)]))))]
+       1))))
+
+(def solution2 (part-2 grid))
