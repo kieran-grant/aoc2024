@@ -1,4 +1,4 @@
-(ns day03.core
+(ns aoc2024.day03
   (:gen-class)
   (:require [clojure.string :as str]))
 
