@@ -33,7 +33,7 @@
 (defn backwards-diagonals [matrix]
   (diagonals (reverse-rows matrix)))
 
-(def input ((comp string/split-lines slurp) "input.txt"))
+(def input ((comp string/split-lines slurp) "inputs/04.txt"))
 
 (defn count-xmas-occurances
   [string]
