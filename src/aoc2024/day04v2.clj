@@ -28,11 +28,16 @@ MXMXAXMASX")
 (defn part-1
   [grid]
   (count (for
-          [[[x y] c] grid
-           :when (= \X c)
-           dx [-1 0 1]
-           dy [-1 0 1]
-           :when (every? (fn [[i l]] (= l (grid [(+ x (* i dx))
-                                                 (+ y (* i dy))]))) letters)] 1)))
+          [[[x y] c] grid ; bind coordinates / char from grid at each iteration
+           :when (= \X c) ; where the current character == X
+           dx [-1 0 1]    ; loop over dx es
+           dy [-1 0 1]    ; loop over dy es
+                          ; e.g. (dx, dy) = (0,0) (1,0) (0,1) (1,1) ...
+           :when
+           (every?        ; where full word is satisfied
+            (fn [[i l]] (= l (grid [(+ x (* i dx))
+                                    (+ y (* i dy))])))
+            letters)] ; work over (idx, char) pairs in the word "XMAS"
+           1))) ; mark valid configuration as '1'
 
 (def solution1 (part-1 example-grid))
