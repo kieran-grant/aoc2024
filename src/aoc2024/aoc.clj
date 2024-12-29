@@ -38,6 +38,11 @@
   (mapv #(parse-line % parse-fn word-sep)
         (str/split s (or nl-sep #"\n"))))
 
+(defn parse-paragraphs
+  [input & [parse-fn word-sep]]
+  (mapv #(parse-lines % parse-fn {:word-sep word-sep})
+        (parse-lines input nil {:nl-sep #"\n\n"})))
+
 (defn grid->point-map
   ([v] (grid->point-map v identity nil))
   ([v pred] (grid->point-map v pred nil))
