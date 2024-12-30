@@ -41,15 +41,20 @@
 (defn move [curr dir]
   (map + curr (dirs dir)))
 
-(defn part-1
+(defn guard-path
   ([grid]
-   (part-1 grid (find-start grid) :north #{}))
+   (guard-path grid (find-start grid) :north #{}))
   ([grid curr-pos dir visited]
    (let [new-visited (cons curr-pos visited)
          new-pos (move curr-pos dir)]
      (case (grid new-pos)
-       nil (count (set new-visited))
+       nil (set new-visited)
        \# (recur grid curr-pos (turn-right dir) new-visited)
        (recur grid new-pos dir new-visited)))))
 
+(defn part-1
+  [grid]
+  (->> grid guard-path count))
+
+(part-1 example-data)
 (part-1 data)
