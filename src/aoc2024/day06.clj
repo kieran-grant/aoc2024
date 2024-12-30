@@ -68,8 +68,8 @@
          new-pos (move curr-pos dir)
          next-step (grid new-pos)]
      (cond
-       (visited elem-pair) true
-       (nil? next-step) false
+       (visited elem-pair) 1
+       (nil? next-step) 0
        (= \# next-step) (recur grid curr-pos (turn-right dir) new-visited)
        :else (recur grid new-pos dir new-visited)))))
 
@@ -78,7 +78,7 @@
    (let [start (find-start grid)]
      (part-2 grid (guard-path grid) start)))
   ([grid path start]
-   (count (filter #(is-loop? (conj grid [% \#]) start) path))))
+   (reduce + (pmap #(is-loop? (conj grid [% \#]) start) path))))
 
 (part-2 example-data)
 (part-2 data)
