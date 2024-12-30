@@ -58,3 +58,28 @@
 
 (part-1 example-data)
 (part-1 data)
+
+(defn is-loop?
+  ([grid start]
+   (is-loop? grid start :north #{}))
+  ([grid curr-pos dir visited]
+   (let [elem-pair [curr-pos dir]
+         new-visited (conj visited elem-pair)
+         new-pos (move curr-pos dir)
+         next-step (grid new-pos)]
+     (cond
+       (visited elem-pair) true
+       (nil? next-step) false
+       (= \# next-step) (recur grid curr-pos (turn-right dir) new-visited)
+       :else (recur grid new-pos dir new-visited)))))
+
+(defn part-2
+  ([grid]
+   (let [start (find-start grid)]
+     (part-2 grid (guard-path grid) start)))
+  ([grid path start]
+   (count (filter #(is-loop? (conj grid [% \#]) start) path))))
+
+(part-2 example-data)
+(part-2 data)
+
