@@ -30,21 +30,36 @@
    (map vector (rest nums) fns)))
 
 (defn get-combs
-  [seeds]
-  (let [combs (make-combs (dec (count seeds)) [+ *])]
+  [seeds fns]
+  (let [combs (make-combs (dec (count seeds)) fns)]
     (pmap #(reduce-with-fns seeds %) combs)))
 
 (defn has-solution?
-  [[target & seeds]]
-  (let [combs (get-combs seeds)]
+  [[target & seeds] fns]
+  (let [combs (get-combs seeds fns)]
     (true? (some #(= target %) combs))))
 
 (defn part-1
   [inputs]
   (->> inputs
-       (filter has-solution?)
+       (filter #(has-solution? % [* +]))
+       (map first)
+       (reduce +)))
+
+(defn ||
+  [x y]
+  (read-string (str x y)))
+
+(defn part-2
+  [inputs]
+  (->> inputs
+       (filter #(has-solution? % [* + ||]))
        (map first)
        (reduce +)))
 
 (part-1 example-data)
-(part-1 data)
+; (part-1 data)
+
+(part-2 example-data)
+(part-2 data)
+
