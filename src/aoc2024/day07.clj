@@ -24,8 +24,8 @@
 
 (defn reduce-with-fns [nums fns]
   (reduce
-   (fn [acc [num fn]]
-     (fn acc num))
+   (fn [acc [num f]]
+     (f acc num))
    (first nums)
    (map vector (rest nums) fns)))
 
